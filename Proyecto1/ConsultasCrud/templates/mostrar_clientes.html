@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de cliente</title>
+</head>
+<body>
+    <h1>Lista de Clientes</h1>
+    <ul>
+    {% for cliente in clientes %}
+        <li>Nombre: {{ cliente.nombre_cliente }}, Edad: {{ cliente.edad_medico}}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

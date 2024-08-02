@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Médicos</title>
+</head>
+<body>
+    <h1>Lista de Médicos</h1>
+    <ul>
+    {% for medico in medicos %}
+        <li>Nombre: {{ medico.nombre_medico }}, Especialidad: {{ medico.especialidad }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

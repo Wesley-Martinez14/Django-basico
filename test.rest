@@ -1,0 +1,35 @@
+
+
+
+###
+POST  http://127.0.0.1:8080/api/token/
+Content-Type: application/x-www-form-urlencoded
+ {
+    "username": "wesley",
+    "password": "1234Abc!@#$"
+ }
+###
+POST http://127.0.0.1:8080/medicos/
+Content-Type: application/json
+Vary: Accept
+{
+        "nombre_medico": "Juan",
+        "edad_medico": 43,
+        "especialidad": "Pediatra",
+        "sexo_medico": "F"
+}
+
+###
+
+GET http://127.0.0.1:8080/medicos/
+Content-Type: application/json
+
+###
+PUT http://127.0.0.1:8080/medicos/1/
+Content-Type: application/json
+
+###
+
+DELETE http://127.0.0.1:8080/medicos/1/
+Content-Type: application/json
+

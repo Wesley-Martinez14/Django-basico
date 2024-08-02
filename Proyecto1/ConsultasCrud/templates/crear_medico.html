@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Médico</title>
+</head>
+<body>
+    <h1>Crear Médico</h1>
+    <form method="POST" action="{% url 'crear_medico' %}">
+        {% csrf_token %}
+        <label for="nombre_medico">Nombre:</label>
+        <input type="text" id="nombre_medico" name="nombre_medico"><br><br>
+
+        <label for="edad_medico">Edad:</label>
+        <input type="number" id="edad_medico" name="edad_medico"><br><br>
+
+        <label for="especialidad">Especialidad:</label>
+        <input type="text" id="especialidad" name="especialidad"><br><br>
+
+        <label for="sexo_medico">Sexo:</label>
+        <select id="sexo_medico" name="sexo_medico">
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+        </select><br><br>
+
+        <input type="submit" value="Crear Médico">
+    </form>
+</body>
+</html>
