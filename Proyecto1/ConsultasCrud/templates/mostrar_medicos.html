@@ -8,6 +8,10 @@
     <ul>
     {% for medico in medicos %}
         <li>Nombre: {{ medico.nombre_medico }}, Especialidad: {{ medico.especialidad }}</li>
+        <form method="POST" action="{% url 'borrar_medico' medico.id %}">
+            {% csrf_token %}
+            <button type="submit">Eliminar</button>
+        </form>
     {% endfor %}
     </ul>
 </body>

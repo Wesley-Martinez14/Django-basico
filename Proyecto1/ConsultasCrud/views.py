@@ -1,8 +1,9 @@
 from rest_framework import viewsets
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import MedicoDb, ClienteDb, CitaDb
 from .serializer import MedicoSerializer, ClienteSerializer, CitaSerializer
 import requests
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # def IndexView(request):
@@ -62,6 +63,17 @@ def crear_medico(request):
             return render(request, 'crear_medico.html', {'error': 'Error al crear médico'})
 
     return render(request, 'crear_medico.html')
+
+@csrf_exempt
+def borrar_medico(request, id):
+    url = f'http://127.0.0.1:8080/medicos/{id}'
+    if request.method == 'POST':
+        response = requests.delete(url)
+        if response.status_code == 204:  # No Content
+            return redirect('mostrar_medicos')
+        else:
+            return HttpResponse(status=405)
+    return HttpResponse(status=405)
 
 def mostrar_clientes(request):
     url = 'http://127.0.0.1:8080/clientes/'

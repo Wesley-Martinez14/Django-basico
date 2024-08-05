@@ -30,6 +30,6 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:8080/medicos/1/
+DELETE http://127.0.0.1:8080/medicos/3/
 Content-Type: application/json
 
