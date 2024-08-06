@@ -64,12 +64,47 @@ def crear_medico(request):
 
     return render(request, 'crear_medico.html')
 
+
+@csrf_exempt
+def editar_medico(request, id):
+
+    url = f'http://127.0.0.1:8080/medicos/{id}/'
+    if request.method == 'POST':
+        nombre_medico = request.POST.get('nombre_medico')
+        edad_medico = request.POST.get('edad_medico')
+        especialidad = request.POST.get('especialidad')
+        sexo_medico = request.POST.get('sexo_medico')
+
+
+        data = {
+            'nombre_medico': nombre_medico,
+            'edad_medico': edad_medico,
+            'especialidad': especialidad,
+            'sexo_medico': sexo_medico
+        }
+
+        response = requests.put(url, json=data)\
+        
+        if response.status_code == 200:
+            return redirect('mostrar_medicos')  
+        else:
+            return HttpResponse(f"Error al actualizar el médico: {response.status_code} - {response.text}", status=response.status_code)
+
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        medico = response.json()
+        return render(request, 'editar_medico.html', {'medico': medico})
+    else:
+        return HttpResponse(f"Error al obtener el médico: {response.status_code}", status=response.status_code)
+
+       
 @csrf_exempt
 def borrar_medico(request, id):
     url = f'http://127.0.0.1:8080/medicos/{id}'
     if request.method == 'POST':
         response = requests.delete(url)
-        if response.status_code == 204:  # No Content
+        if response.status_code == 204:
             return redirect('mostrar_medicos')
         else:
             return HttpResponse(status=405)
