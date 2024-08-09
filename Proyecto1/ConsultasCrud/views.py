@@ -5,6 +5,7 @@ from .serializer import MedicoSerializer, ClienteSerializer, CitaSerializer
 import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+import httpx
 
 # def IndexView(request):
 #     obj = MedicoDb.objects.all().order_by("id")
@@ -23,10 +24,10 @@ class CitaViewSet(viewsets.ModelViewSet):
     serializer_class = CitaSerializer
 
 
-def mostrar_medicos(request):
+async def mostrar_medicos(request):
     url = 'http://127.0.0.1:8080/medicos/'
-
-    response = requests.get(url)
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
 
     medicos = []
     if response.status_code == 200:
@@ -38,7 +39,7 @@ def mostrar_medicos(request):
     return render(request, 'mostrar_medicos.html', context)
 
 @csrf_exempt
-def crear_medico(request):
+async def crear_medico(request):
     if request.method == 'POST':
         nombre_medico = request.POST.get('nombre_medico')
         edad_medico = request.POST.get('edad_medico')
@@ -53,8 +54,8 @@ def crear_medico(request):
             'especialidad': especialidad,
             'sexo_medico': sexo_medico
         }
-
-        response = requests.post(url, json=data)
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json=data)
 
         if response.status_code == 201:
             return redirect('mostrar_medicos')
@@ -66,7 +67,7 @@ def crear_medico(request):
 
 
 @csrf_exempt
-def editar_medico(request, id):
+async def editar_medico(request, id):
 
     url = f'http://127.0.0.1:8080/medicos/{id}/'
     if request.method == 'POST':
@@ -82,8 +83,8 @@ def editar_medico(request, id):
             'especialidad': especialidad,
             'sexo_medico': sexo_medico
         }
-
-        response = requests.put(url, json=data)\
+        async with httpx.AsyncClient() as client:
+            response = await client.put(url, json=data)
         
         if response.status_code == 200:
             return redirect('mostrar_medicos')  
@@ -100,20 +101,21 @@ def editar_medico(request, id):
 
        
 @csrf_exempt
-def borrar_medico(request, id):
-    url = f'http://127.0.0.1:8080/medicos/{id}'
+async def borrar_medico(request, id):
+    url = f'http://127.0.0.1:8080/medicos/{id}/'
     if request.method == 'POST':
-        response = requests.delete(url)
+        async with httpx.AsyncClient() as client:
+            response = await client.delete(url)
         if response.status_code == 204:
             return redirect('mostrar_medicos')
         else:
             return HttpResponse(status=405)
     return HttpResponse(status=405)
 
-def mostrar_clientes(request):
+async def mostrar_clientes(request):
     url = 'http://127.0.0.1:8080/clientes/'
-
-    response = requests.get(url)
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
 
     clientes = []
     if response.status_code == 200:
@@ -124,10 +126,10 @@ def mostrar_clientes(request):
     }
     return render(request, 'mostrar_clientes.html', context)
 
-def mostrar_citas(request):
+async def mostrar_citas(request):
     url = 'http://127.0.0.1:8080/cita/'
-
-    response = requests.get(url)
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
 
     citas = []
     if response.status_code == 200:

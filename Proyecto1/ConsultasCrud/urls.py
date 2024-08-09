@@ -1,5 +1,4 @@
 from django.urls import path, include
-# from .views import IndexView
 from rest_framework.routers import DefaultRouter
 from .views import MedicoViewSet, ClienteViewSet, CitaViewSet, crear_medico, borrar_medico, editar_medico
 from . import views
