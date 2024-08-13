@@ -6,6 +6,7 @@ import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import httpx
+from django.core.paginator import Paginator
 
 # def IndexView(request):
 #     obj = MedicoDb.objects.all().order_by("id")
@@ -33,8 +34,13 @@ async def mostrar_medicos(request):
     if response.status_code == 200:
         medicos = response.json()
 
+    paginator = Paginator(medicos, 2)
+    page_number =  request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
     context = {
-        'medicos': medicos
+        'medicos': page_obj.object_list,
+        'page_obj': page_obj,
     }
     return render(request, 'mostrar_medicos.html', context)
 
