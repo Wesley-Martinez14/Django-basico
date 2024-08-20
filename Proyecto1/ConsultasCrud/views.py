@@ -3,10 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import MedicoDb, ClienteDb, CitaDb
 from .serializer import MedicoSerializer, ClienteSerializer, CitaSerializer
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 import httpx
 from django.core.paginator import Paginator
+import io
+from reportlab.pdfgen import canvas
 
 # def IndexView(request):
 #     obj = MedicoDb.objects.all().order_by("id")
@@ -145,3 +147,31 @@ async def mostrar_citas(request):
         'citas': citas
     }
     return render(request, 'mostrar_citas.html', context)
+
+def generar_pdf(request):
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer)
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 750, "Lista de Medicos")
+
+    medicos = MedicoDb.objects.all()
+
+    y= 720
+
+    p.setFont("Helvetica", 12)
+    for m in medicos:
+        p.drawString(100, y, f"Nombre: {m.nombre_medico}, Edad: {m.edad_medico}, Especialidad: {m.especialidad} ")
+        y -= 20
+
+        if y < 100:
+            p.showPage()
+            y = 750
+    
+    p.showPage()
+    p.save()
+
+
+    buffer.seek(0)
+
+    return FileResponse(buffer, as_attachment=True, filename="Lista_medico.pdf")

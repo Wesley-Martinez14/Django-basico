@@ -15,6 +15,7 @@
         <a href="{% url 'editar_medico' medico.id %}">Editar</a>
     {% endfor %}
     </ul>
+    <a href="{% url 'generar_pdf' %}">Descargar pdf</a>
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
